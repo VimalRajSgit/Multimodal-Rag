@@ -1,5 +1,11 @@
 # 🧠 Multimodal RAG System: Contextual AI for Diverse Data
 
+## Live Demo
+
+[![Gradio Deployment](https://img.shields.io/badge/Test_Live_Demo-Gradio_Hugging_Face_Space-blue?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/VimalrajS04/gradio_interface)
+
+---
+
 ## Overview
 
 This project implements a **Multimodal Retrieval-Augmented Generation (RAG) system** designed to process, store, and query diverse data types, including **plain text, images, and complex PDFs** with mixed content. It leverages **OCR, a Vision Language Model (VLM), vector search, and a powerful LLM** (Groq) to provide accurate, context-aware answers with source attribution.
@@ -29,14 +35,14 @@ The system is exposed via a **Flask REST API**, enabling seamless integration fo
 The system follows a classic RAG pattern, enhanced for multimodality:
 
 1.  **Ingestion Pipeline:**
-    * Files are uploaded via the `/upload` endpoint.
+    * Files are uploaded via the `/upload` endpoint (or via the Gradio interface).
     * The file type determines the processing path.
     * **PDFs** are iterated page-by-page, extracting text and processing visuals/embedded images.
     * **Images** are first attempted with OCR; if the text is insufficient, the VLM is used for a detailed summary.
     * Processed content is wrapped into LangChain `Document` objects.
     * Documents are embedded and stored in the **Qdrant** vector store.
 2.  **Query Pipeline:**
-    * A user query is sent to the `/query` endpoint.
+    * A user query is sent to the `/query` endpoint (or via the Gradio chat interface).
     * The query is embedded.
     * **Qdrant** performs a similarity search to retrieve the top *k* most relevant document chunks.
     * A **reranking step** is applied to prioritize visual-based context for visual queries.

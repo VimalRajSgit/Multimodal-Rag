@@ -1,0 +1,28 @@
+# Core AI/LLM/Vision
+groq==0.33.0
+torch==2.9.0
+
+# LangChain & Vector Store
+langchain
+langchain-community
+langchain-core
+
+langchain_huggingface
+
+sentence-transformers==5.1.2
+
+langchain-qdrant==1.1.0
+qdrant-client==1.15.1
+
+
+
+# Document Processing (OCR & PDF)
+python-doctr==1.0.0
+PyMuPDF==1.26.5
+Pillow==10.4.0
+
+# Gradio Interface
+gradio==5.49.1
+
+# Utilities
+numpy

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drac AI Test Interface</title>
+    <style>
+        body { font-family: Arial; margin: 40px; background: #f5f5f5; }
+        h2 { color: #333; }
+        form { margin-bottom: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        label { font-weight: bold; }
+        input[type="text"], input[type="file"] {
+            margin-top: 8px;
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #0056b3; }
+        pre {
+            background: #222; color: #0f0;
+            padding: 10px; border-radius: 8px;
+            max-height: 300px; overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>📤 Upload Document</h2>
+    <form id="uploadForm">
+        <label for="file">Choose file:</label><br>
+        <input type="file" id="file" name="file"><br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>💬 Query System</h2>
+    <form id="queryForm">
+        <label for="query">Enter your question:</label><br>
+        <input type="text" id="query" placeholder="e.g. What is Hive architecture?"><br>
+        <button type="submit">Ask</button>
+    </form>
+
+    <h3>🔍 Response</h3>
+    <pre id="responseBox">{ waiting for response... }</pre>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const queryForm = document.getElementById('queryForm');
+        const responseBox = document.getElementById('responseBox');
+
+        // File Upload
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('file');
+            const formData = new FormData();
+            formData.append('files', fileInput.files[0]);
+            
+            responseBox.textContent = "Uploading file...";
+            try {
+                const res = await fetch("https://vimalrajs04-assignment-drac.hf.space/upload", {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                responseBox.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                responseBox.textContent = "❌ Error: " + err;
+            }
+        });
+
+        // Query
+        queryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('query').value;
+            responseBox.textContent = "Fetching answer...";
+            try {
+                const res = await fetch("https://vimalrajs04-assignment-drac.hf.space/query", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query, k: 3 })
+                });
+                const data = await res.json();
+                responseBox.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                responseBox.textContent = "❌ Error: " + err;
+            }
+        });
+    </script>
+
+</body>
+</html>
